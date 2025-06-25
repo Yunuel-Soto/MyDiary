@@ -1,0 +1,108 @@
+body {
+    font-family: cursive;
+    font-size: clamp(16px, 3vw, 19px);
+}
+
+.main_layout {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+}
+
+.main_layout_default {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+body > div {
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.circle {
+    width: 20vw;
+    height: 20vw;
+    min-width: 200px;
+    min-height: 200px;
+    background-color: blueviolet;
+    position: absolute;
+    border-radius: 100%;
+    z-index: 0;
+}
+
+.label_error {
+    color: #ba0707;
+    display: flex;
+    width: 100%;
+}
+
+@keyframes circleAnimate {
+    0% {
+        transform: scale(1.2);
+    }
+
+    50% {
+        transform: scale(1)
+    }
+
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+.circle:first-child {
+    right: -5%;
+    top: -4%;
+
+    animation-name: circleAnimate;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+}
+
+.circle:nth-child(2) {
+    top: 20%;
+    left: 16%;
+
+    animation-name: circleAnimate;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-delay: 2s;
+}
+
+.circle:nth-child(3) {
+    bottom: 0px;
+    left: -5%;
+
+    animation-name: circleAnimate;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-delay: 4s;
+}
+
+.circle:nth-child(4) {
+    bottom: 28%;
+    right: 15%;
+    animation-name: circleAnimate;
+    animation-duration: 5s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-delay: 6s;
+}
+

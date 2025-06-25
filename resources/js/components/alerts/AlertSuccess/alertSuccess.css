@@ -1,0 +1,46 @@
+.alertSuccess .title{
+    background-color: #19bc3f;
+    color: #eee;
+    padding: 5px;
+    border-radius: 5px 5px 0px 0px;
+    width: 100%;
+    padding-left: 1rem;
+}
+
+.alertSuccess .body {
+    padding: 5px;
+    border-radius: 5px;
+    padding-left: 1rem;
+}
+
+.alertSuccess {
+    background-color: #19bc3f;
+    width: 20vw;
+    min-width: 300px;
+    color: #eee;
+    border-radius: 5px;
+    position: absolute;
+    left: 1vw;
+    transform: translateX(-100vw);
+    top: 1vh;
+    transition: all 1s;
+    animation-name: notification;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    z-index: 3;
+}
+
+.hide {
+    left: -20rem;
+}
+
+@keyframes notification {
+    0% {
+        transform: translateX(-100vw);
+    }
+
+    100% {
+        transform: translateX(20%);
+    }
+}

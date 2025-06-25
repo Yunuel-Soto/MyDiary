@@ -1,0 +1,65 @@
+.navbar {
+    display: flex;
+    width: 100%;
+    background-color: rgb(160, 81, 233);
+    justify-content: space-between;
+    z-index: 2;
+    position: sticky;
+    top: 0px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    height: fit-content;
+}
+
+.navbar ul {
+    display: flex;
+    flex-direction: row;
+    color: #eee;
+    padding: 0.5rem;
+}
+
+.navbar ul li a {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+/* .navbar ul:last-child li a:hover {
+    transform: scale(1.1);
+} */
+
+.navbar ul:last-child li a:active {
+    color: rgb(42, 8, 74);
+    transform: scale(1);
+}
+
+.navbar ul li .links {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.navbar ul li .links a:last-child {
+    font-size: clamp(12px, 2vw, 14px);
+}
+
+.navbar ul li .links a:last-child:hover {
+    color: red;
+}
+
+.navbar ul li .logSing {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.navbar ul li .logSing a:last-child {
+    background-color: rgb(124, 34, 208);
+    padding: 7px;
+    border-radius: 10px;
+}

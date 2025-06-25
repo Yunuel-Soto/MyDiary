@@ -1,0 +1,29 @@
+button {
+    border-radius: 5px;
+    height: 40px;
+    width: 100%;
+    cursor: pointer;
+    font-size: clamp(16px, 2vw, 15px);
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-normal {
+    background-color: rgb(96, 8, 178);
+    color: #eee;
+}
+
+.btn-disable {
+    background-color: #868484;
+    color: #eee;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+button:active {
+    transform: scale(0.8);
+}
