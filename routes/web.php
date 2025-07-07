@@ -22,12 +22,14 @@ Route::controller(UserController::class)->group(function() {
     Route::get('/Logout', 'logout')->name('logout');
 });
 
-Route::controller(EntryController::class)->group(function() {
-    Route::post('/Entry', 'create')->name('create.entry');
-    Route::delete('Delete/Entry/{entry}', 'delete')->name('delete.entry');
-    Route::post('Update/Entry/{entry}', 'update')->name('update.entry');
-});
+Route::middleware('AuthUser')->group(function() {
+    Route::controller(EntryController::class)->group(function() {
+        Route::post('/Entry', 'create')->name('create.entry');
+        Route::delete('Delete/Entry/{entry}', 'delete')->name('delete.entry');
+        Route::post('Update/Entry/{entry}', 'update')->name('update.entry');
+    });
 
-Route::controller(FriendRequestsController::class)->group(function() {
-    Route::get('/Friends', 'index')->name('index.friends');
+    Route::controller(FriendRequestsController::class)->group(function() {
+        Route::get('/Friends', 'index')->name('index.friends');
+    });
 });

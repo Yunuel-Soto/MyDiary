@@ -1,9 +1,9 @@
 import { Head } from '@inertiajs/react'
 import React from 'react'
 import './friends.css'
+import Button from '../../components/Button/Button'
 
 function Friends({users}) {
-    console.log(users);
   return (
     <>
         <Head>
@@ -16,7 +16,24 @@ function Friends({users}) {
                     <img src="/assets/img/search.png"/>
                 </div>
             </div>
-            <section className='friends'></section>
+            <section className='friends'>
+                {users.map((user, index) => {
+                    return (
+                        <div className='cardFriend' key={user.id}>
+                            <picture>
+                                <img src='/assets/img/usuario_big.png'/>
+                            </picture>
+                           <div>
+                                <label>{user.name}</label>
+                           </div>
+                            <Button
+                                text={'Agregar como amigo'}
+                                type='button'
+                            />
+                        </div>
+                    );
+                })}
+            </section>
         </div>
     </>
   )

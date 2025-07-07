@@ -1,6 +1,9 @@
 .content_friends {
     height: 100%;
     padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
 }
 
 .search_content {
@@ -46,3 +49,49 @@
     width: 90%;
 }
 
+/* CARDS */
+
+.content_friends .friends {
+    display: flex;
+    width: 100%;
+    height: 80vh;
+    overflow-y: scroll;
+    gap: 30px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.content_friends .friends .cardFriend {
+    background-color: rgb(160, 81, 233);
+    color: #eee;
+    height: fit-content;
+    min-height: 45vh;
+    border-radius: 10px;
+    z-index: 1;
+    padding: 2rem;
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.content_friends .friends .cardFriend picture {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+}
+
+.content_friends .friends .cardFriend picture img {
+    width: auto;
+    height: 100%;
+    border-radius: 100%;
+}
+
+.content_friends .friends .cardFriend div {
+    width: 100%;
+    text-wrap: wrap;
+    height: auto;
+    text-align: center;
+}
