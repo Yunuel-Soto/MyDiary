@@ -22,7 +22,7 @@ Route::controller(UserController::class)->group(function() {
     Route::get('/Logout', 'logout')->name('logout');
 });
 
-Route::middleware('AuthUser')->group(function() {
+Route::middleware('auth')->group(function() {
     Route::controller(EntryController::class)->group(function() {
         Route::post('/Entry', 'create')->name('create.entry');
         Route::delete('Delete/Entry/{entry}', 'delete')->name('delete.entry');
@@ -30,6 +30,7 @@ Route::middleware('AuthUser')->group(function() {
     });
 
     Route::controller(FriendRequestsController::class)->group(function() {
-        Route::get('/Friends', 'index')->name('index.friends');
+        Route::get('/Friends/{type?}', 'index')->name('index.friends');
+        Route::post('/Friend/Request/{id}', 'friendRequest')->name('friendRequest');
     });
 });

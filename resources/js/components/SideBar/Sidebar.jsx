@@ -40,12 +40,14 @@ function Sidebar() {
                     <label>Buscar mis entradas</label>
                 </Link>
             </li>
-            <li>
-                <Link>
-                    <img src='/assets/img/ajustes.png' />
-                    <label>Administrar</label>
-                </Link>
-            </li>
+            {user.admin ? (
+                <li>
+                    <Link>
+                        <img src='/assets/img/ajustes.png' />
+                        <label>Administrar</label>
+                    </Link>
+                </li>
+            ) : ('')}
         </ul>
         <ul className='menu1'>
             <li>

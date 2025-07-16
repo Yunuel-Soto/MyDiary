@@ -14,7 +14,7 @@
 }
 
 .alertError {
-    background-color: #b80410;
+    background-color: #E10110;
     width: 20vw;
     min-width: 300px;
     color: #eee;
@@ -28,10 +28,11 @@
     animation-duration: 1s;
     animation-iteration-count: 1;
     animation-fill-mode: both;
+    z-index: 3;
 }
 
 .hide {
-    left: -20rem;
+    left: -50vw;
 }
 
 @keyframes notification {
@@ -40,7 +41,6 @@
     }
 
     100% {
-        transform: translateX(0vw);
+        transform: translateX(5%);
     }
 }
-

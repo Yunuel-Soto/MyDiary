@@ -8,7 +8,6 @@ function ModalDelete({ entity, openModal, div = null, title='No hay texto', URL 
 
     function submit(e)
     {
-        console.log('delete');
         e.preventDefault();
         console.log(URL);
         destroy(URL, {

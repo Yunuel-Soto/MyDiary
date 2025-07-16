@@ -14,15 +14,17 @@ function Login() {
     const { flash } = usePage().props;
     const [flashMsg, setFlashMsg] = useState(flash.message);
     const [ showPassword, setShowPassword ] = useState(false);
-
-    setTimeout(() => {
-        setFlashMsg(null);
-    }, 2000);
+    const [showAlertError, setshowAlertError] = useState(false);
 
     function submit(e)
     {
         e.preventDefault();
-        post(route('login'));
+        post(route('login'), {
+            onSuccess: () => {
+                setshowAlertError(true);
+                setTimeout(() => setshowAlertError(false), 4000);
+            }
+        });
     }
 
     function showPass(e)
@@ -36,8 +38,8 @@ function Login() {
             <title>Login</title>
         </Head>
 
-        {flash.message == 'error_credentials' &&
-            <AlertError message={'Credenciales no validas'} />
+        {showAlertError &&
+            <AlertError message={'Credenciales incorrectas'} />
         }
 
         <form onSubmit={submit}>

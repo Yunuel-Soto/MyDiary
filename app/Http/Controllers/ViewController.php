@@ -19,9 +19,9 @@ class ViewController extends Controller
             return redirect()->route('main');
         }
 
-        $user = Auth::user()->load('friends')->load('entries');
+        $user = Auth::user()->load('entries')->load('friendsS');
 
-        $friends = $user->friends()->wherePivot('status', 'accepted')->get()
+        $friends = $user->friendsS()->get()
             ->pluck('id')
             ->toArray();
 

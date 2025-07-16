@@ -8,7 +8,6 @@ function ModalFriends({ openModal, setData, entry = null }) {
 
     const { user } = usePage().props;
     const [selectedFriends, setSelectedFriends] = useState([]);
-
     function setOpenModal(e)
     {
         if(openModal) {
@@ -51,7 +50,7 @@ function ModalFriends({ openModal, setData, entry = null }) {
         <div style={entry ? {width: '100%'} : {}} className={`modal ${openModal ? 'open_modal' : ''}`}>
             <div className='title'>Selecciona tus amigos</div>
             <div className='body'>
-                {user.friends.length > 0 ? user.friends.
+                {user.friends_s.length > 0 ? user.friends_s.
                     filter(friend => friend.pivot?.status == 'accepted')
                     .map((friend, index) => (
                         <Input
