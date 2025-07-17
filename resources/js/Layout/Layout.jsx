@@ -24,7 +24,6 @@ function Layout({children}) {
             <div className='circle'></div>
             <div className='circle'></div>
         {children}
-        remove  canges
         </main>
     </div>
   )
