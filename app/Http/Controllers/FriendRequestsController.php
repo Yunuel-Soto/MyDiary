@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class FriendRequestsController extends Controller
 {
-    function index($type = '')
+    function index(Request $req, $type = '')
     {
         $user = Auth::user()->load('friendsS')->load('friendsR');
 
@@ -118,5 +118,14 @@ class FriendRequestsController extends Controller
                 'message' => 'friend_request_send'
             ]);
         }
+    }
+
+    public function friendRejectedRequest($id) 
+    {
+        Auth::user()->friendsR()->detach($id);
+
+        return redirect()->back()->with([
+            'message' => 'friend_request_rejected'
+        ]);
     }
 }

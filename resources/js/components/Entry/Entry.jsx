@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import './entry.css';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import ModalDelete from '../Modals/ModalDelete';
 import ModalUpdateEntry from '../Modals/ModalUpdateEntry';
 function Entry({entry}) {
     const [openModal, setOpenModal] = useState(false);
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
-
+    const { user } = usePage().props;
+    
     function openModalDelete(e)
     {
         if (openModal) {
@@ -65,14 +66,16 @@ function Entry({entry}) {
         <div className='card'>
             <div className='title'>
                 <label>{entry.creator.name}</label>
-                <div className='buttons'>
-                    <label onClick={openModalDelete}>
-                        <img src='assets/img/eliminar.png'/>
-                    </label>
-                    <label onClick={actionOpenModalUpdate}>
-                        <img src='assets/img/editar.png'/>
-                    </label>
-                </div>
+                {user.id === entry.creator.id ? (
+                    <div className='buttons'>
+                        <label onClick={openModalDelete}>
+                            <img src='assets/img/eliminar.png'/>
+                        </label>
+                        <label onClick={actionOpenModalUpdate}>
+                            <img src='assets/img/editar.png'/>
+                        </label>
+                    </div>
+                ) : ('')}                  
             </div>
             <div className='content_body'>
                 <img src={!entry.creator.image_user ? entry.creator.image_user.path : '/assets/img/avatar.png'}/>

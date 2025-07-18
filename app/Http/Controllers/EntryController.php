@@ -11,11 +11,11 @@ class EntryController extends Controller
 {
     public function index()
     {
-        $entry = Entry::all();
+        // $entry = Entry::all();
 
-        return inertia('home', [
-            'entry' => $entry
-        ]);
+        // return inertia('home', [
+        //     'entry' => $entry
+        // ]);
     }
 
     public function create(Request $req)
@@ -44,7 +44,7 @@ class EntryController extends Controller
         $friends = $req->input('friend');
 
         if($friends) {
-
+            $entry->users()->attach($friends);
         }
 
         return redirect()->route('homeSession')->with([
@@ -92,7 +92,7 @@ class EntryController extends Controller
         $friends = $req->input('friend');
 
         if($friends) {
-
+            $entry->users()->sync($friends);
         }
 
         return redirect()->route('homeSession')->with([

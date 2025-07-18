@@ -19,7 +19,9 @@ function ModalUpdateEntry({openModal, entry, title}) {
     });
 
     useEffect(() => {
-        changeVisibility(entry.visibility);
+        let value = entry.visibility
+        setValueVisibility(value);
+
         setData('body', entry.body);
         setData('visibilityValue', entry.visibility);
 
@@ -73,12 +75,17 @@ function ModalUpdateEntry({openModal, entry, title}) {
         }
     }
 
-    function changeVisibility(value) {
+    function setValueVisibility(value)
+    {
         setData("visibilityValue", value);
 
         value == 'public' ? setImgValue('assets/img/public.png') : '';
         value == 'private' ? setImgValue('assets/img/seguro.png') : '';
         value == 'friends' ? setImgValue('assets/img/friends.png') : '';
+    }
+
+    function changeVisibility(value) {        
+        setValueVisibility(value);
 
         if(value == 'friends') {
             setOpenModalFriends(true);
@@ -133,14 +140,15 @@ function ModalUpdateEntry({openModal, entry, title}) {
                         loading={processing}
                     />
                 </div>
-            </div>
-            <ModalFriends
+            </div>            
+          </form>
+          <ModalFriends
                 openModal={openModalFriends}
                 setData={setData}
                 entry={entry}
             />
-        </form>
     </div>
+    
   )
 }
 

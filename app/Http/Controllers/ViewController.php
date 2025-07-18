@@ -19,12 +19,18 @@ class ViewController extends Controller
             return redirect()->route('main');
         }
 
-        $user = Auth::user()->load('entries')->load('friendsS');
+        $user = Auth::user()->load('entries')->load('friendsS')->load('friendsR');
 
-        $friends = $user->friendsS()->get()
-            ->pluck('id')
+        $friendsS = $user->friendsS()->where('status', 'accepted')
+            ->pluck('recived_id')
             ->toArray();
 
+        $friendsR = $user->friendsR()->where('status', 'accepted')
+            ->pluck('sender_id')
+            ->toArray();
+
+        $friends = array_merge($friendsR, $friendsS);
+        
         $entries = Entry::where('creator_id', $user->id)
             ->orWhere(function($query) use ($friends) {
                 $query->where('visibility', 'public')
@@ -42,6 +48,7 @@ class ViewController extends Controller
                 'creator.imageUser',
                 'imageEntry'
             ])
+            ->with('users')
             ->orderByDesc('created_at')
             ->get();
 

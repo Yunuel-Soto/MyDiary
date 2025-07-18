@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, usePage } from '@inertiajs/react'
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 import './modal.css'
 
-function ModalFriends({ openModal, setData, entry = null }) {
+function ModalFriends({ openModal = false, setData, entry = null }) {
 
     const { user } = usePage().props;
     const [selectedFriends, setSelectedFriends] = useState([]);
+    const [checked, setChecked] = useState({});
+
+
     function setOpenModal(e)
     {
         if(openModal) {
@@ -33,18 +36,66 @@ function ModalFriends({ openModal, setData, entry = null }) {
 
     function toggleFriends(e)
     {
-        let newList = {...selectedFriends}
+        let newList = [...selectedFriends]
 
         if(e.target.checked) {
             newList.push(e.target.value);
+
+            setChecked(prev => ({
+                ...prev,
+                [e.target.value]: true
+            }));
+
         } else {
             newList = newList.filter(id => id !== e.target.value);
+
+            setChecked(prev => ({
+                ...prev,
+                [e.target.value]: false
+            }));
         }
 
         setSelectedFriends(newList);
+
         setData("friend", newList);
     }
 
+    function checkedAction(id)
+    {        
+        if (entry) {
+            let checkFriend = entry.users.find(user => user.id == id);
+    
+            return checkFriend ? true : false;
+        }
+
+        return false;
+    }
+
+    useEffect(() => {
+        user.friends_s.
+            filter(friend => friend.pivot?.status == 'accepted')
+            .forEach((friend, index) => {
+                let bool = checkedAction(friend.id);
+
+                setChecked(prev => ({
+                    ...prev,
+                    [friend.id]: bool
+                }));
+            });
+        
+        user.friends_r.
+            filter(friend => friend.pivot?.status == 'accepted')
+            .forEach((friend, index) => {
+                let bool = checkedAction(friend.id);
+
+                setChecked(prev => ({
+                    ...prev,
+                    [friend.id]: bool
+                }));
+            });
+        
+    }, []);    
+    
   return (
     <div className={`content_modal ${entry ? `friend-${entry.id}` : ''} ${openModal ? 'open_content_modal' : ''}`}>
         <div style={entry ? {width: '100%'} : {}} className={`modal ${openModal ? 'open_modal' : ''}`}>
@@ -59,8 +110,21 @@ function ModalFriends({ openModal, setData, entry = null }) {
                             name="friend[]"
                             value={friend.id}
                             onchange={toggleFriends}
+                            check={checked[friend.id]}
                         />
-                    )) : 'Aun no tienes amigos'}
+                    )) : ('')}
+                  {user.friends_r.length > 0 ? user.friends_r.
+                      filter(friend => friend.pivot?.status == 'accepted')
+                      .map((friend, index) => (
+                            <Input
+                                type='checkbox'
+                                label={friend.name}
+                                name="friend[]"
+                                value={friend.id}
+                                onchange={toggleFriends}
+                                check={checked[friend.id]}                            
+                            />
+                      )) : ('')}                
             </div>
             <div className='footer'>
                 <Button

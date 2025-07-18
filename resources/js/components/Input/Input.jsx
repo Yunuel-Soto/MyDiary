@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import './input.css'
 
-function Input({value = '', type, width, label, options = [], name, required, onchange = null, onkeyup = null, error = false, className = ''}) {
+function Input({value = '', type, width, label, options = [], name, required, onchange = null, onkeyup = null, error = false, className = '', check = false}) {
 
     const labelRef = useRef(null);
     const inputRef = useRef(null);
@@ -50,6 +50,7 @@ function Input({value = '', type, width, label, options = [], name, required, on
                     placeholder=''
                     onChange={onchange}
                     onKeyUp={onkeyup}
+                    checked={type === 'checkbox' ? check : undefined}
                     className={`${error ? 'input-error' : ''} ${className}`}
                 />
             )

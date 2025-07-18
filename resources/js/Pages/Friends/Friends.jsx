@@ -5,7 +5,7 @@ import React, { use, useCallback, useEffect, useState } from 'react'
 import { debounce } from 'lodash';
 
 function Friends({users, type}) {
-    const { post, errors, processing } = useForm();
+    const { delete: destroy, post, errors, processing } = useForm();
     const [ textButton, setTextButton ] = useState({});
     const [ loading, setLoading ] = useState(null);
     const { user, flash } = usePage().props;
@@ -88,6 +88,16 @@ function Friends({users, type}) {
         });
     }), []);
 
+    function deleteAction(id)
+    {
+        setLoading(id + 'rejected');
+        destroy(route('friendRejectedRequest', id), {
+            onFinish: () => {
+                setLoading(null);
+            }
+        });
+    }
+
     function rejectButton(otherUser)
     {
         // Para colocar el boton de reachazado
@@ -97,7 +107,10 @@ function Friends({users, type}) {
             return (
                 <Button
                     text={'Rechazar solicitud'}
-                    className='btn-danger '
+                    className='btn-danger'
+                    type='button'
+                    onclick={() => deleteAction(otherUser.id)}
+                    loading={loading === otherUser.id + 'rejected'}
                 />
             )
         }

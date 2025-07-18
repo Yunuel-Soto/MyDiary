@@ -36,5 +36,6 @@ Route::middleware('auth')->group(function() {
     Route::controller(FriendRequestsController::class)->group(function() {
         Route::get('/Friends/{type?}', 'index')->name('index.friends');
         Route::post('/Friend/Request/{id}', 'friendRequest')->name('friendRequest');
+        Route::delete('/Friend/Rejected/Request/{id}', 'friendRejectedRequest')->name('friendRejectedRequest');
     });
 });

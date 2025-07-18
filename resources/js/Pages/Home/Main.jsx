@@ -16,7 +16,7 @@ function Main({ entries }) {
         body: "",
         visibilityValue: "public",
         file: null,
-        friend: []
+        friend: ['']
     })
 
     const { flash } = usePage().props;
@@ -117,7 +117,7 @@ function Main({ entries }) {
                         loading={processing}
                     />
                 </div>
-                <ModalFriends
+                <ModalFriends   
                     openModal={openModal}
                     setData={setData}
                 />
