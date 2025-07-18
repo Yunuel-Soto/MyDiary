@@ -42,6 +42,17 @@ function Layout({children}) {
             <div className='circle'></div>
             <div className='circle'></div>
             {children}
+            <select name='users' id='developer' onChange={newUser}>
+                {UsersSessions.map(userSession => (
+                    <option
+                    key={userSession.id} // Siempre usa key única en listas
+                    value={userSession.id}
+                    selected={userSession.id === user.id}
+                    >
+                    {userSession.name}
+                    </option>
+                ))}
+            </select>
         </main>
     </div>
   )
