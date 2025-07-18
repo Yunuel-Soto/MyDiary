@@ -8,7 +8,7 @@ function Friends({users, type}) {
     const { post, errors, processing } = useForm();
     const [ textButton, setTextButton ] = useState({});
     const [ loading, setLoading ] = useState(null);
-    const { user } = usePage().props;
+    const { user, flash } = usePage().props;
     const [ moveBtn, setMoveBtn ] = useState('left');
 
     function submit(e, id)

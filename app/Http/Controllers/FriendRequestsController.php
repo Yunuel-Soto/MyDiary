@@ -50,12 +50,12 @@ class FriendRequestsController extends Controller
 
     function friendRequest($id)
     {
-        // Configuracion
         $user = User::find($id);
 
+        // Si enviaron solicitud, la acepta
         $friendRequest = $user->friendsS()
             ->where('recived_id', Auth::user()->id)
-            ->wherePivot('status', 'accepted')
+            ->wherePivot('status', 'pending')
             ->exists();
 
         if($friendRequest) {
@@ -63,19 +63,14 @@ class FriendRequestsController extends Controller
                 'response_at' => Carbon::now(),
                 'status' => 'accepted'
             ]);
-        }
 
-        $friendRequest = Auth::user()->friendsS()->where('recived_id', $id)->first();
-
-        if($friendRequest) {
-            Auth::user()->friendsS()->detach($id);
-        } else {
-            Auth::user()->friendsS()->attach($id, [
-                'status' => 'pending',
-                'send_at' => Carbon::now()
+            return redirect()->back()->with([
+                'message' => 'friend_request_send'
             ]);
         }
+        //
 
+        // Si son amigos, lo elimina
         $friendS = Auth::user()->friendsS()
             ->where('recived_id', $id)
             ->wherePivot('status', 'accepted')
@@ -87,14 +82,41 @@ class FriendRequestsController extends Controller
 
         if($friendS) {
             Auth::user()->friendsS()->detach($id);
+
+            return redirect()->back()->with([
+                'message' => 'friend_request_send'
+            ]);
         }
 
         if($friendR) {
             Auth::user()->friendsR()->detach($id);
-        }
 
-        return redirect()->back()->with([
-            'message' => 'friend_request_send'
-        ]);
+            return redirect()->back()->with([
+                'message' => 'friend_request_send'
+            ]);
+        }
+        //
+
+        // Si el usuario logeado envio solicitud lo elimina o crea la solicitud de lo contrario
+        $friendRequest = Auth::user()->friendsS()->where('recived_id', $id)
+            ->wherePivot('status', 'pending')
+            ->first();
+
+        if($friendRequest) {
+            Auth::user()->friendsS()->detach($id);
+
+            return redirect()->back()->with([
+                'message' => 'friend_request_send'
+            ]);
+        } else {
+            Auth::user()->friendsS()->attach($id, [
+                'status' => 'pending',
+                'send_at' => Carbon::now()
+            ]);
+
+            return redirect()->back()->with([
+                'message' => 'friend_request_send'
+            ]);
+        }
     }
 }
