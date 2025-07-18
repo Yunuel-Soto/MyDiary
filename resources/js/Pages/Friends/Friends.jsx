@@ -19,23 +19,19 @@ function Friends({users, type}) {
 
         let URL = '';
 
-        if(type == '1') {
-            URL = route('acceptedFriendRequest', id);
-        } else {
-            URL = route('friendRequest', id);
-        }
+        URL = route('friendRequest', id);
 
         post(URL, {
             onSuccess: () => {
-                if(textButton[id] == 'Cancelar invitacion') {
+                if(textButton[id] == 'Cancelar solicitud') {
                     setTextButton(prev => ({
                         ...prev,
                         [id]: 'Enviar solicitud de amistad'
                     }));
-                } else {
+                } else if(textButton[id] == 'Enviar solicitud de amistad') {
                     setTextButton(prev => ({
                         ...prev,
-                        [id]: 'Cancelar invitacion'
+                        [id]: 'Cancelar solicitud'
                     }));
                 }
             },
@@ -51,18 +47,19 @@ function Friends({users, type}) {
     {
         let text = '';
 
-        let requestFriends = user.friends_s?.find(request => request.id == otherUser.id && request.status == 'accepted');
+        let friendsS = user.friends_s?.find(request => request.id == otherUser.id && request.pivot.status == 'accepted');
+        let friendsR = user.friends_r?.find(request => request.id == otherUser.id && request.pivot.status == 'accepted');
 
-        if(!requestFriends) {
-            requestFriends = user.friends_r?.find(request => request.pivot.sender_id == otherUser.id && request.pivot.status == 'accepted');
-        }
+        let friendRequest = user.friends_r?.find(request => request.id == otherUser.id && request.pivot.status == 'pending');
 
-        let requestOnly = user.friends_s?.find(request => request.id == otherUser.id && request.pivot.status == 'pending');
+        let friendSendMe = user.friends_s?.find(request => request.id == otherUser.id && request.pivot.status == 'pending');
 
-        if(requestFriends) {
+        if(friendsS || friendsR) {
             text = 'Eliminar amigo';
-        }else if(requestOnly) {
-            text = 'Cancelar invitacion';
+        }else if(friendRequest) {
+            text = 'Aceptar solicitud';
+        }else if(friendSendMe) {
+            text = 'Cancelar solicitud';
         } else {
             text = 'Enviar solicitud de amistad';
         }
@@ -94,6 +91,16 @@ function Friends({users, type}) {
     function rejectButton(otherUser)
     {
         // Para colocar el boton de reachazado
+        let friendRequest = user.friends_r?.find(request => request.id == otherUser.id && request.pivot.status == 'pending');
+
+        if(friendRequest) {
+            return (
+                <Button
+                    text={'Rechazar solicitud'}
+                    className='btn-danger '
+                />
+            )
+        }
     }
 
     useEffect(() => {
@@ -109,7 +116,7 @@ function Friends({users, type}) {
             setMoveBtn('profiles');
         }
 
-    }, [])
+    }, [users, user])
 
   return (
     <>
@@ -146,7 +153,7 @@ function Friends({users, type}) {
                                     disable={processing === otherUser.id}
                                     loading={loading === otherUser.id}
                                 />
-                                {() => rejectButton(otherUser)}
+                                {rejectButton(otherUser)}
                            </div>
                         </form>
                     );

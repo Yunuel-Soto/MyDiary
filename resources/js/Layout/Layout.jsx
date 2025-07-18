@@ -27,9 +27,12 @@ function Layout({children}) {
         });
     }
 
-    function selectedAuth(id)
+    function isLocalEnviroment()
     {
-
+        if (typeof window !== 'undefined') {
+            return window.location.hostname === 'localhost' ||
+                window.location.hostname === '127.0.0.1';
+        }
     }
 
   return (
@@ -42,17 +45,21 @@ function Layout({children}) {
             <div className='circle'></div>
             <div className='circle'></div>
             {children}
-            <select name='users' id='developer' onChange={newUser}>
-                {UsersSessions.map(userSession => (
-                    <option
-                    key={userSession.id} // Siempre usa key única en listas
-                    value={userSession.id}
-                    selected={userSession.id === user.id}
-                    >
-                    {userSession.name}
-                    </option>
-                ))}
-            </select>
+            {
+                isLocalEnviroment() && user && (
+                    <select name='users' id='developer' onChange={newUser}>
+                        {UsersSessions.map(userSession => (
+                            <option
+                            key={userSession.id} // Siempre usa key única en listas
+                            value={userSession.id}
+                            selected={userSession.id === user.id}
+                            >
+                            {userSession.name}
+                            </option>
+                        ))}
+                    </select>
+                )
+            }
         </main>
     </div>
   )

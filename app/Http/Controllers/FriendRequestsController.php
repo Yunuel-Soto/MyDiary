@@ -50,18 +50,18 @@ class FriendRequestsController extends Controller
 
     function friendRequest($id)
     {
+        // Configuracion
         $user = User::find($id);
 
-        $friendRequest = $user->friendsS()->where('recived_id', Auth::user()->id)->exists();
+        $friendRequest = $user->friendsS()
+            ->where('recived_id', Auth::user()->id)
+            ->wherePivot('status', 'accepted')
+            ->exists();
 
         if($friendRequest) {
             $user->friendsS()->updateExistingPivot(Auth::user()->id, [
                 'response_at' => Carbon::now(),
                 'status' => 'accepted'
-            ]);
-
-            return redirect()->back()->with([
-                'message' => 'friend_request_accepted'
             ]);
         }
 
@@ -74,6 +74,23 @@ class FriendRequestsController extends Controller
                 'status' => 'pending',
                 'send_at' => Carbon::now()
             ]);
+        }
+
+        $friendS = Auth::user()->friendsS()
+            ->where('recived_id', $id)
+            ->wherePivot('status', 'accepted')
+            ->first();
+        $friendR = Auth::user()->friendsR()
+            ->where('sender_id', $id)
+            ->wherePivot('status', 'accepted')
+            ->first();
+
+        if($friendS) {
+            Auth::user()->friendsS()->detach($id);
+        }
+
+        if($friendR) {
+            Auth::user()->friendsR()->detach($id);
         }
 
         return redirect()->back()->with([
