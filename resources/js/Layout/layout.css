@@ -50,6 +50,23 @@ body > div {
     width: 100%;
 }
 
+#developer {
+    max-width: 290px;
+    min-width: 100px;
+    position: absolute;
+    right: 10px;
+    top: 1px;
+    z-index: 3;
+    background-color: #eee;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #b4b4b4;
+}
+
+#developer:focus {
+    outline: none;
+}
+
 @keyframes circleAnimate {
     0% {
         transform: scale(1.2);

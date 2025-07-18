@@ -20,13 +20,15 @@ class FriendRequestsController extends Controller
 
         if($type == '1') {
             $users = User::where('id', '!=', $user->id)
-                ->whereHas('friendsS', function($query) use ($user) {
-                    $query->where('status', 'accepted')
-                        ->where('sender_id', $user->id);
-                })
-                ->orWhereHas('friendsR', function($query) use ($user) {
-                    $query->where('status', 'accepted')
-                        ->where('recived_id', $user->id);
+                ->where(function($query) use ($user) {
+                    $query->whereHas('friendsS', function ($query) use ($user) {
+                        $query->where('status', 'accepted')
+                            ->where('recived_id', $user->id);
+                    })
+                    ->orWhereHas('friendsR', function ($query) use ($user) {
+                        $query->where('status', 'accepted')
+                            ->where('sender_id', $user->id);
+                    });
                 })
                 ->get();
         } else if($type == '2') {

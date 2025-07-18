@@ -23,6 +23,10 @@ Route::controller(UserController::class)->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
+    Route::controller(UserController::class)->group(function() {
+        Route::post('/new/auth/user/{id}', 'newUserAuth')->name('newUserAuth');
+    });
+
     Route::controller(EntryController::class)->group(function() {
         Route::post('/Entry', 'create')->name('create.entry');
         Route::delete('Delete/Entry/{entry}', 'delete')->name('delete.entry');

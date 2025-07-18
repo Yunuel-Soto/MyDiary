@@ -11,8 +11,6 @@ function Friends({users, type}) {
     const { user } = usePage().props;
     const [ moveBtn, setMoveBtn ] = useState('left');
 
-    console.log(user);
-
     function submit(e, id)
     {
         e.preventDefault();
@@ -62,7 +60,7 @@ function Friends({users, type}) {
         let requestOnly = user.friends_s?.find(request => request.id == otherUser.id && request.pivot.status == 'pending');
 
         if(requestFriends) {
-            text = 'Ya son amigos';
+            text = 'Eliminar amigo';
         }else if(requestOnly) {
             text = 'Cancelar invitacion';
         } else {
@@ -95,7 +93,7 @@ function Friends({users, type}) {
 
     function rejectButton(otherUser)
     {
-
+        // Para colocar el boton de reachazado
     }
 
     useEffect(() => {

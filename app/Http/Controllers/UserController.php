@@ -17,6 +17,16 @@ class UserController extends Controller
 
     }
 
+    public function newUserAuth(Request $req, $id)
+    {
+        Auth::logout();
+        $req->session()->regenerateToken();
+
+        Auth::loginUsingId($id);
+
+        return redirect()->back();
+    }
+
     /**
      * SingIn form
      */
