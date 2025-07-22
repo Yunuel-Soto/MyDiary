@@ -6,10 +6,12 @@ import { debounce } from 'lodash';
 
 function Friends({users, type}) {
     const { delete: destroy, post, errors, processing } = useForm();
+
     const [ textButton, setTextButton ] = useState({});
     const [ loading, setLoading ] = useState(null);
     const { user, flash } = usePage().props;
     const [ moveBtn, setMoveBtn ] = useState('left');
+    const [ searchTerm, setSearchTerm ] = useState('');
 
     function submit(e, id)
     {
@@ -41,8 +43,6 @@ function Friends({users, type}) {
         });
     }
 
-
-
     function friendOrNot(otherUser)
     {
         let text = '';
@@ -70,7 +70,7 @@ function Friends({users, type}) {
         }));
     }
 
-    const handleNavigation = useCallback(debounce((type) => {
+    const handleNavigation = useCallback(debounce((type, searchTerm) => {
         if(type == '1') {
             setMoveBtn('users');
         } else if (type == '2') {
@@ -80,13 +80,20 @@ function Friends({users, type}) {
         }
 
         router.get(route('index.friends', [type]), {
-
+            type: type,
+            search: searchTerm
         }, {
            preserveState: true,
            replace: true,
-           only: ['users', 'type']
+           only: ['users', 'type'],
         });
     }), []);
+
+    function handleSearchTerm(e)
+    {
+        setSearchTerm(e.target.value);
+        handleNavigation(type, e.target.value);
+    }
 
     function deleteAction(id)
     {
@@ -139,14 +146,14 @@ function Friends({users, type}) {
         <div className='content_friends'>
             <div className='search_content'>
                 <div className='search'>
-                    <input type='text' placeholder='Buscar amigos' name='search'/>
+                    <input type='text' onKeyUp={handleSearchTerm} placeholder='Buscar amigos' name='search'/>
                     <img src="/assets/img/search.png"/>
                 </div>
             </div>
             <div className='content_type'>
-                <label  onClick={() => handleNavigation(null)}>Perfiles</label>
-                <label  onClick={() => handleNavigation('1')}>Amigos</label>
-                <label  onClick={() => handleNavigation('2')}>Solicitudes</label>
+                <label  onClick={() => handleNavigation(null, searchTerm)}>Perfiles</label>
+                <label  onClick={() => handleNavigation('1', searchTerm)}>Amigos</label>
+                <label  onClick={() => handleNavigation('2', searchTerm)}>Solicitudes</label>
                 <span className={`back_type ${moveBtn}`}></span>
             </div>
             <section className='friends'>

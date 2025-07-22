@@ -74,6 +74,20 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    transition: all 0.5s;
+    animation-name: cardFriend;
+    animation-duration: 0.5s;
+}
+
+@keyframes cardFriend {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateX(100px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateX(0px);
+    }
 }
 
 .content_friends .friends .cardFriend picture {

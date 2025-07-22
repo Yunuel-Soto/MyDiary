@@ -1,6 +1,6 @@
 button {
     border-radius: 5px;
-    height: 40px;
+    min-height: 40px;
     width: 100%;
     cursor: pointer;
     font-size: clamp(16px, 2vw, 15px);

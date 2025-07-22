@@ -25,6 +25,19 @@
     gap: 20px;
     cursor: pointer;
     padding-bottom: 1rem;
+    transition: all 0.5s;
+}
+
+@keyframes entryAnimation {
+    0% {
+        opacity: 0;
+        transform: translateX(500px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0px)
+    }
 }
 
 .content_cards .card .title {

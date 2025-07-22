@@ -74,7 +74,7 @@ class UserController extends Controller
         ];
 
         if(!Auth::attempt($credentials)) {
-            return redirect()->route('loginForm')->with([
+            return redirect()->back()->with([
                 'message' => 'error_credentials',
             ]);
         }

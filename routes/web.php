@@ -4,7 +4,6 @@ use App\Http\Controllers\EntryController;
 use App\Http\Controllers\FriendRequestsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewController;
-use App\Http\Middleware\AuthUser;
 use App\Models\FriendRequests;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +14,10 @@ Route::controller(ViewController::class)->group(function() {
 });
 
 Route::controller(UserController::class)->group(function() {
-    Route::get('/Login', 'loginForm')->name('loginForm');
+    Route::get('/Login', 'loginForm')->name('login');
     Route::get('/SingIn', 'create')->name('singInForm');
     Route::post('/SingIn/create', 'singIn')->name('singIn');
-    Route::post('/Login/initial', 'login')->name('login');
+    Route::post('/Login/initial', 'login')->name('loginInit');
     Route::get('/Logout', 'logout')->name('logout');
 });
 

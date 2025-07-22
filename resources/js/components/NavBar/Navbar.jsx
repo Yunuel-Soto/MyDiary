@@ -34,7 +34,7 @@ function Navbar() {
                     </div>
                 ) : (
                     <div className='logSing'>
-                        <Link href={route('loginForm')}>
+                        <Link href={route('login')}>
                             Iniciar sesión
                         </Link>
                         <Link href={route('singInForm')}>

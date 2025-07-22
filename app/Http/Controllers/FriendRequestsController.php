@@ -18,8 +18,10 @@ class FriendRequestsController extends Controller
             return redirect()->route('main');
         }
 
+        $query = User::query();
+
         if($type == '1') {
-            $users = User::where('id', '!=', $user->id)
+            $query->where('id', '!=', $user->id)
                 ->where(function($query) use ($user) {
                     $query->whereHas('friendsS', function ($query) use ($user) {
                         $query->where('status', 'accepted')
@@ -29,21 +31,34 @@ class FriendRequestsController extends Controller
                         $query->where('status', 'accepted')
                             ->where('sender_id', $user->id);
                     });
-                })
-                ->get();
+                });
         } else if($type == '2') {
-            $users = $user->friendsR()->where('status', 'pending')->get();
+            $query->where('id', '!=', $user->id)
+                ->where(function($query) use ($user) {
+                    $query->whereHas('friendsS', function($query) use ($user) {
+                        $query->where('status', 'pending')
+                            ->where('recived_id', $user->id);
+                    });
+                });
         } else {
-            $users = User::where('id', '!=', $user->id)
+            $query->where('id', '!=', $user->id)
                 ->whereDoesntHave('friendsS', function($query) use ($user) {
                     $query->where('status', 'accepted')
                         ->where('recived_id',$user->id);
                 })->whereDoesntHave('friendsR', function($query) use ($user) {
                     $query->where('status', 'accepted')
                         ->where('sender_id',$user->id);
-                })
-                ->get();
+                });
         }
+
+        $query->when($req->search, function($query, $s) {
+            $query->where(function($query) use ($s) {
+                $query->orWhere('name', 'like', '%' . $s . '%')
+                    ->orWhere('email', 'like', '%' . $s . '%');
+            });
+        });
+
+        $users = $query->get();
 
         return inertia('Friends/Friends', compact('users', 'type'));
     }
@@ -120,7 +135,7 @@ class FriendRequestsController extends Controller
         }
     }
 
-    public function friendRejectedRequest($id) 
+    public function friendRejectedRequest($id)
     {
         Auth::user()->friendsR()->detach($id);
 

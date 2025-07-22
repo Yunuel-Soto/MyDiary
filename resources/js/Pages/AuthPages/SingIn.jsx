@@ -150,7 +150,7 @@ function SingIn() {
                 disabled={processing}
                 loading={processing}
             />
-            <p>¿Ya tienes cuenta? <Link href={route('loginForm')}>Inicia sesion</Link></p>
+            <p>¿Ya tienes cuenta? <Link href={route('login')}>Inicia sesion</Link></p>
         </form>
     </div>
   )

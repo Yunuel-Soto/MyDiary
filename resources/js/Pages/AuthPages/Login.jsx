@@ -19,7 +19,7 @@ function Login() {
     function submit(e)
     {
         e.preventDefault();
-        post(route('login'), {
+        post(route('loginInit'), {
             onSuccess: () => {
                 setshowAlertError(true);
                 setTimeout(() => setshowAlertError(false), 4000);

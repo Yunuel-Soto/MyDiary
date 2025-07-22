@@ -37,7 +37,7 @@ function Sidebar() {
             <li>
                 <Link>
                     <img src='/assets/img/libro.png' />
-                    <label>Buscar mis entradas</label>
+                    <label>Pregunta del dia</label>
                 </Link>
             </li>
             {user.admin ? (

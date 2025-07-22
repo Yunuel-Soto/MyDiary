@@ -1,3 +1,7 @@
+#nprogress {
+    position: absolute;
+}
+
 section {
     height: 91vh;
     display: flex;

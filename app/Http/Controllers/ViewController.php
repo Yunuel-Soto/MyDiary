@@ -13,11 +13,13 @@ class ViewController extends Controller
         return inertia('Home/Home');
     }
 
-    function homeSession()
+    function homeSession(Request $req)
     {
         if(!Auth::check()) {
             return redirect()->route('main');
         }
+
+        $page = $req->prePage ? $req->prePage : 10;
 
         $user = Auth::user()->load('entries')->load('friendsS')->load('friendsR');
 
@@ -30,7 +32,7 @@ class ViewController extends Controller
             ->toArray();
 
         $friends = array_merge($friendsR, $friendsS);
-        
+
         $entries = Entry::where('creator_id', $user->id)
             ->orWhere(function($query) use ($friends) {
                 $query->where('visibility', 'public')
@@ -50,7 +52,7 @@ class ViewController extends Controller
             ])
             ->with('users')
             ->orderByDesc('created_at')
-            ->get();
+            ->paginate($page);
 
         return inertia('Home/Main', [
             'entries' => $entries

@@ -1,5 +1,5 @@
-import { Head, useForm, usePage } from '@inertiajs/react'
-import React, { useEffect, useState } from 'react'
+import { Head, useForm, usePage, router } from '@inertiajs/react'
+import React, { useEffect, useState, useCallback } from 'react'
 import './home.css'
 import Input from '../../components/Input/Input'
 import DropFile from '../../components/DropFile/DropFile'
@@ -8,6 +8,7 @@ import ModalFriends from '../../components/Modals/ModalFriends'
 import AlertSuccess from '../../components/alerts/AlertSuccess/AlertSuccess'
 import Entry from '../../components/Entry/Entry'
 import ModalDelete from '../../components/Modals/ModalDelete'
+import { debounce } from 'lodash'
 
 function Main({ entries }) {
     const { user } = usePage().props;
@@ -16,8 +17,8 @@ function Main({ entries }) {
         body: "",
         visibilityValue: "public",
         file: null,
-        friend: ['']
-    })
+        friend: []
+    });
 
     const { flash } = usePage().props;
 
@@ -25,6 +26,7 @@ function Main({ entries }) {
     const [imgValue, setImgValue] = useState('assets/img/public.png');
     const [openModal, setOpenModal] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [prePage, setPrePage] = useState(20);
 
     const clickDialog = (e) => {
         e.stopPropagation();
@@ -59,11 +61,23 @@ function Main({ entries }) {
         e.preventDefault();
         post(route('create.entry'), {
             forceFormData: true,
+            preserveState: true,
+            replace: true,
+            only: ['entries'],
             onSuccess: () => {
                 let inputs = document.querySelectorAll('textarea, pinput, select');
                 inputs.forEach(input => {
                     input.value = '';
                 });
+
+                let cards = document.querySelectorAll('.card');
+                cards[0].style.transform = 'scale(0.8)';
+
+                setTimeout(() => {
+                    cards[0].style.transform = 'scale(1)'
+                    cards[0].style.opacity = '1';
+                }, 500);
+
 
                 let img = document.querySelector('.dropFile img');
                 let label = document.querySelector('.dropFile label')
@@ -76,6 +90,20 @@ function Main({ entries }) {
             }
         });
     }
+
+    const handlePrePage = useCallback(debounce((prePage) => {
+        let page = prePage + 20;
+        setPrePage(page);
+
+        router.get(route('homeSession'), {
+            prePage: page
+        }, {
+            preserveState: true,
+            replace: true,
+            only: ['entries'],
+        });
+    }), [entries]);
+
   return (
     <>
         {showSuccess &&
@@ -117,15 +145,18 @@ function Main({ entries }) {
                         loading={processing}
                     />
                 </div>
-                <ModalFriends   
+                <ModalFriends
                     openModal={openModal}
                     setData={setData}
                 />
             </form>
             <section className='content_cards'>
-                {entries.map((entry) => (
+                {entries.data.map((entry) => (
                     <Entry entry={entry}/>
                 ))}
+                {entries.last_page != 1 ? (
+                    <Button text={'Ver mas'} width={'20%'} onclick={() => handlePrePage(prePage)}/>
+                ) : ('')}
             </section>
         </div>
     </>

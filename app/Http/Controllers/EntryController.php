@@ -54,6 +54,10 @@ class EntryController extends Controller
 
     public function update(Request $req, Entry $entry)
     {
+        if($entry->creator->id != Auth::user()->id) {
+            return redirect()->back()->with('message', 'not_your_entry');
+        }
+
         $entry->body = $req->body;
         $entry->visibility = $req->visibilityValue;
         $entry->save();
@@ -103,9 +107,13 @@ class EntryController extends Controller
 
     public function delete(Entry $entry)
     {
+        if($entry->creator->id != Auth::user()->id) {
+            return redirect()->back()->with('message', 'not_your_entry');
+        }
+
         $entry->delete();
 
-        return redirect()->route('homeSession')->with([
+        return redirect()->back()->with([
             'message' => 'delete_entry'
         ]);
     }

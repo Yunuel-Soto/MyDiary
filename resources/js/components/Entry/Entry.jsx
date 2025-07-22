@@ -7,7 +7,7 @@ function Entry({entry}) {
     const [openModal, setOpenModal] = useState(false);
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const { user } = usePage().props;
-    
+
     function openModalDelete(e)
     {
         if (openModal) {
@@ -66,16 +66,14 @@ function Entry({entry}) {
         <div className='card'>
             <div className='title'>
                 <label>{entry.creator.name}</label>
-                {user.id === entry.creator.id ? (
-                    <div className='buttons'>
-                        <label onClick={openModalDelete}>
-                            <img src='assets/img/eliminar.png'/>
-                        </label>
-                        <label onClick={actionOpenModalUpdate}>
-                            <img src='assets/img/editar.png'/>
-                        </label>
-                    </div>
-                ) : ('')}                  
+                <div className='buttons' style={{ display: user.id != entry.creator.id ? 'none' : 'flex' }}>
+                    <label onClick={openModalDelete}>
+                        <img src='assets/img/eliminar.png'/>
+                    </label>
+                    <label onClick={actionOpenModalUpdate}>
+                        <img src='assets/img/editar.png'/>
+                    </label>
+                </div>
             </div>
             <div className='content_body'>
                 <img src={!entry.creator.image_user ? entry.creator.image_user.path : '/assets/img/avatar.png'}/>
